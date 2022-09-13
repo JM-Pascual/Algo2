@@ -5,7 +5,7 @@
 
 using namespace std;
 
-//Cambios en el arcivo
+//Cambios en el archivo
 
 void cargar_libro(Biblioteca* biblioteca, Libro* libro){
     int tope_actual_libros = biblioteca -> cantidad_libros_almacenados;
