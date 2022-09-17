@@ -5,7 +5,6 @@
 
 using namespace std;
 
-//Cambios en el archivo
 
 void cargar_libro(Biblioteca* biblioteca, Libro* libro){
     int tope_actual_libros = biblioteca -> cantidad_libros_almacenados;
@@ -208,7 +207,7 @@ void editar_puntaje_libro(Biblioteca* biblioteca){
 
 
 void cargar_ranking(Biblioteca* biblioteca, Biblioteca* ranking, 
-        int tope_libros, int &tope_ranking, int puntaje_ganador){
+        int tope_libros, int &tope_ranking, int &puntaje_ganador){
     
     for(int i = 0; i < tope_libros; i++){
         if (biblioteca -> vector_libros[i] -> puntaje >= puntaje_ganador){
@@ -237,6 +236,7 @@ void listar_libros_mejor_puntuados(Biblioteca* biblioteca){
 
     cargar_ranking(biblioteca, ranking, tope_libros, tope_ranking, puntaje_ganador);
 
+    cout<<"Mostrando los mejores libro/s, con un puntaje de: "<<puntaje_ganador<<'\n';
     for (int j = 0; j < tope_ranking; j++){
         if (ranking -> vector_libros[j] -> puntaje == puntaje_ganador){
             cout<<"- "<<ranking -> vector_libros[j] -> nombre<<'\n';
@@ -246,4 +246,153 @@ void listar_libros_mejor_puntuados(Biblioteca* biblioteca){
     }
 
     delete ranking;
+}
+
+
+void cargar_vector_contadores(Biblioteca* biblioteca, int tope_libros, int vector_contadores[]){
+    int contador_aventura = 0, contador_ciencia_ficcion = 0, contador_didactico = 0, 
+        contador_policial = 0, contador_romance = 0, contador_terror = 0;
+
+    for (int i = 0; i < tope_libros; i++){
+        string genero = biblioteca -> vector_libros[i] -> genero;
+        if (genero == AVENTURA){
+            contador_aventura++;
+        }
+        else if (genero == CIENCIA_FICCION){
+            contador_ciencia_ficcion++;
+        }
+        else if (genero == DIDACTICO){
+            contador_didactico++;
+        }
+        else if (genero == POLICIAL){
+            contador_policial++;
+        }
+        else if (genero == ROMANCE){
+            contador_romance++;
+        }
+        else if (genero == TERROR){
+            contador_terror++;
+        }
+    }
+    vector_contadores[INDEX_AVENTURA] = contador_aventura;
+    vector_contadores[INDEX_CIENCIA_FICCION] = contador_ciencia_ficcion;
+    vector_contadores[INDEX_DIDACTICO] = contador_didactico;
+    vector_contadores[INDEX_POLICIAL] = contador_policial;
+    vector_contadores[INDEX_ROMANCE] = contador_romance;
+    vector_contadores[INDEX_TERROR] = contador_terror;
+}
+
+
+void imprimir_genero_ganador(int index){
+    switch (index) {
+    case (INDEX_AVENTURA):
+        cout<<"- Aventura"<<'\n';
+        break;
+    case (INDEX_CIENCIA_FICCION):
+        cout<<"- Ciencia Ficción"<<'\n';
+        break;
+    case (INDEX_DIDACTICO):
+        cout<<"- Didactico"<<'\n';
+        break;
+    case (INDEX_POLICIAL):
+        cout<<"- Policial"<<'\n';
+        break;
+    case (INDEX_ROMANCE):
+        cout<<"- Romance"<<'\n';
+        break;
+    case (INDEX_TERROR):
+        cout<<"- Terror"<<'\n';
+        break;
+    default:
+        cout<<"Todo mal";
+        break;
+    }
+}
+
+
+void generos_mas_leidos(Biblioteca* biblioteca){
+    int tope_libros = biblioteca -> cantidad_libros_almacenados;
+    
+    int vector_contadores[TOPE_GENEROS];
+    
+    cargar_vector_contadores(biblioteca, tope_libros, vector_contadores);
+    
+    int contador_mas_alto = 0;
+    for (int i = 0; i < TOPE_GENEROS; i++){
+        if (contador_mas_alto < vector_contadores[i]){
+            contador_mas_alto = vector_contadores[i];
+        }
+    }
+
+    for (int i = 0; i < TOPE_GENEROS; i++){
+        if (vector_contadores[i] == contador_mas_alto){
+            imprimir_genero_ganador(i);
+        }
+    }
+}
+
+
+void cargar_promedios(Biblioteca* biblioteca, int tope_libros, float vector_promedios[]){
+    int contador_aventura = 0, contador_ciencia_ficcion = 0, contador_didactico = 0, 
+        contador_policial = 0, contador_romance = 0, contador_terror = 0;
+
+    int puntajes_aventura = 0, puntajes_ciencia_ficcion = 0, puntajes_didactico = 0, 
+        puntajes_policial = 0, puntajes_romance = 0, puntajes_terror = 0;
+
+    for (int i = 0; i < tope_libros; i++){
+        string genero = biblioteca -> vector_libros[i] -> genero;
+        int puntaje = biblioteca -> vector_libros[i] -> puntaje;
+        if (genero == AVENTURA){
+            puntajes_aventura += puntaje;
+            contador_aventura++;
+        }
+        else if (genero == CIENCIA_FICCION){
+            puntajes_ciencia_ficcion += puntaje;
+            contador_ciencia_ficcion++;
+        }
+        else if (genero == DIDACTICO){
+            puntajes_didactico += puntaje;
+            contador_didactico++;
+        }
+        else if (genero == POLICIAL){
+            puntajes_policial += puntaje;
+            contador_policial++;
+        }
+        else if (genero == ROMANCE){
+            puntajes_romance += puntaje;
+            contador_romance++;
+        }
+        else if (genero == TERROR){
+            puntajes_terror += puntaje;
+            contador_terror++;
+        }
+    }
+    vector_promedios[INDEX_AVENTURA] = (float)puntajes_aventura / contador_aventura;
+    vector_promedios[INDEX_CIENCIA_FICCION] = (float)puntajes_ciencia_ficcion / contador_ciencia_ficcion;
+    vector_promedios[INDEX_DIDACTICO] = (float)puntajes_didactico / contador_didactico;
+    vector_promedios[INDEX_POLICIAL] = (float)puntajes_policial / contador_policial;
+    vector_promedios[INDEX_ROMANCE] = (float)puntajes_romance / contador_romance;
+    vector_promedios[INDEX_TERROR] = (float)puntajes_terror / contador_terror;
+}
+
+
+void genero_mejor_promedio(Biblioteca* biblioteca){
+    int tope_libros = biblioteca -> cantidad_libros_almacenados;
+
+    float vector_promedios[TOPE_GENEROS];
+
+    cargar_promedios(biblioteca, tope_libros, vector_promedios);
+
+    float promedio_mas_alto = 0.0;
+    for (int i = 0; i < TOPE_GENEROS; i++){
+        if (promedio_mas_alto < vector_promedios[i]){
+            promedio_mas_alto = vector_promedios[i];
+        }
+    }
+
+    for (int i = 0; i < TOPE_GENEROS; i++){
+        if (vector_promedios[i] == promedio_mas_alto){
+            imprimir_genero_ganador(i);
+        }
+    }
 }

@@ -13,6 +13,15 @@ const std::string ROMANCE = "R";
 const std::string TERROR = "T";
 
 
+const int TOPE_GENEROS = 6;
+const int INDEX_AVENTURA = 0;
+const int INDEX_CIENCIA_FICCION = 1;
+const int INDEX_DIDACTICO = 2;
+const int INDEX_POLICIAL = 3;
+const int INDEX_ROMANCE = 4;
+const int INDEX_TERROR = 5;
+
+
 struct Libro {
     std::string nombre;
     std::string genero;
@@ -50,5 +59,14 @@ void editar_puntaje_libro(Biblioteca* biblioteca);
 //Post:
 void listar_libros_mejor_puntuados(Biblioteca* biblioteca);
 
+
+//Pre:
+//Post:
+void generos_mas_leidos(Biblioteca* biblioteca);
+
+
+//Pre:
+//Post:
+void genero_mejor_promedio(Biblioteca* biblioteca);
 
 #endif
