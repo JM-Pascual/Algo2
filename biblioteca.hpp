@@ -14,6 +14,8 @@ const std::string TERROR = "T";
 
 
 const int TOPE_GENEROS = 6;
+const int TOPE_PEOR_PUNTUADOS = 3;
+
 const int INDEX_AVENTURA = 0;
 const int INDEX_CIENCIA_FICCION = 1;
 const int INDEX_DIDACTICO = 2;

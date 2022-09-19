@@ -396,3 +396,37 @@ void genero_mejor_promedio(Biblioteca* biblioteca){
         }
     }
 }
+
+
+void ordenar_vector_libros(Biblioteca* biblioteca, int tope_libros){
+    /*void insercion(int vector[MAX_VECTOR], int tope){
+    int aux;
+    int j;
+
+    for (int i = 1; i < tope; i++) {
+        j=i;
+        aux = vector[i];
+        while (j > 0 && aux < vector[j-1]){
+            vector[j] = vector[j-1];
+            j--;
+        }
+        vector[j] = aux;
+    }
+}*/
+}
+
+
+
+void cargar_vector_peor_puntuados(Biblioteca* biblioteca, int tope_libros, Libro vector_peor_puntuados[]){
+}
+
+
+void libros_con_menor_puntaje(Biblioteca* biblioteca){
+    int tope_libros = biblioteca -> cantidad_libros_almacenados;
+
+    Libro vector_peor_puntuados[TOPE_PEOR_PUNTUADOS];
+
+    ordenar_vector_libros(biblioteca, tope_libros);
+
+    cargar_vector_peor_puntuados(biblioteca, tope_libros, vector_peor_puntuados);
+}
