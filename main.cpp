@@ -9,16 +9,15 @@ int main(){
     
     Biblioteca* biblioteca = new Biblioteca;
     biblioteca -> cantidad_libros_almacenados = 0;
-    //cout<<biblioteca -> cantidad_libros_almacenados; ¿Se inicia en 0 automáticamente?
     
     cargar_biblioteca(biblioteca);
-    genero_mejor_promedio(biblioteca);
-    generos_mas_leidos(biblioteca);
+    cargar_nuevo_libro(biblioteca);
+    guardar_y_salir(biblioteca);
 
     delete biblioteca;
 
     return 0;
 }
 
-//NO ESTOY LIMPIANDO LOS LIBROS!
+//NO ESTOY LIMPIANDO LOS LIBROS! ---> Ahora si pero checkear memory leaks
 //Permitirle al user agregar libros escribiendo el genero!

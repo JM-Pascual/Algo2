@@ -146,7 +146,7 @@ int definir_puntaje(){
 }
 
 
-void completar_datos_libro(Biblioteca* biblioteca, Libro* libro_nuevo){
+void completar_datos_libro(Biblioteca* biblioteca, Libro* libro_nuevo, bool &libro_valido){
     cout<<"Introduzca el nombre del libro nombre a continuación: "<<'\n';
     string nombre_libro_nuevo;
     cin>>nombre_libro_nuevo;
@@ -166,6 +166,8 @@ void completar_datos_libro(Biblioteca* biblioteca, Libro* libro_nuevo){
         libro_nuevo -> nombre = nombre_libro_nuevo;
         libro_nuevo -> genero = genero_libro_nuevo;
         libro_nuevo -> puntaje = puntaje_libro_nuevo;
+
+        libro_valido = true;
     }
     
     else{
@@ -180,8 +182,16 @@ void cargar_nuevo_libro(Biblioteca* biblioteca){
     cout<<"Para completar el cargado del libro debe indicar su nombre, género y puntaje"<<'\n';
     
     Libro* libro_nuevo = new Libro;
-    completar_datos_libro(biblioteca, libro_nuevo);
-    cargar_libro(biblioteca, libro_nuevo);
+    bool libro_valido = false;
+
+    completar_datos_libro(biblioteca, libro_nuevo, libro_valido);
+
+    if (libro_valido){
+        cargar_libro(biblioteca, libro_nuevo);
+    }
+    else{
+        delete libro_nuevo;
+    }
 }
 
 
@@ -244,7 +254,8 @@ void listar_libros_mejor_puntuados(Biblioteca* biblioteca){
 
         delete ranking -> vector_libros[j]; //Borro los libros una vez los haya listado o no.
     }
-
+    
+    ranking -> vector_libros = nullptr;
     delete ranking;
 }
 
@@ -398,35 +409,86 @@ void genero_mejor_promedio(Biblioteca* biblioteca){
 }
 
 
-void ordenar_vector_libros(Biblioteca* biblioteca, int tope_libros){
-    /*void insercion(int vector[MAX_VECTOR], int tope){
-    int aux;
+void ordenar_libros_por_nombre(Biblioteca* biblioteca, int tope_libros){
+    Libro* libro_auxiliar;
     int j;
 
-    for (int i = 1; i < tope; i++) {
+    for (int i = 1; i < tope_libros; i++) {
         j=i;
-        aux = vector[i];
-        while (j > 0 && aux < vector[j-1]){
-            vector[j] = vector[j-1];
+        libro_auxiliar = biblioteca -> vector_libros[i];
+
+        while (j > 0 && libro_auxiliar -> puntaje == biblioteca -> vector_libros[j-1] -> puntaje 
+        && (libro_auxiliar -> nombre).compare(biblioteca -> vector_libros[j-1] -> nombre) < 0){
+            biblioteca -> vector_libros[j] = biblioteca -> vector_libros[j-1];
             j--;
         }
-        vector[j] = aux;
+        biblioteca -> vector_libros[j] = libro_auxiliar;
     }
-}*/
 }
 
 
+void ordenar_libros_por_puntaje(Biblioteca* biblioteca, int tope_libros){
+    Libro* libro_auxiliar;
+    int j;
 
-void cargar_vector_peor_puntuados(Biblioteca* biblioteca, int tope_libros, Libro vector_peor_puntuados[]){
+    for (int i = 1; i < tope_libros; i++) {
+        j=i;
+        libro_auxiliar = biblioteca -> vector_libros[i];
+
+        while (j > 0 && libro_auxiliar -> puntaje <= biblioteca -> vector_libros[j-1] -> puntaje){
+            biblioteca -> vector_libros[j] = biblioteca -> vector_libros[j-1];
+            j--;
+        }
+        biblioteca -> vector_libros[j] = libro_auxiliar;
+    }
+}
+
+
+void imprimir_libros_peor_puntuados(Biblioteca* biblioteca){
+    for (int i = 0; i <  TOPE_PEOR_PUNTUADOS; i++){
+        cout<<"- "<<biblioteca -> vector_libros[i] -> nombre<<" // Puntaje: "<<biblioteca -> vector_libros[i] -> puntaje<<'\n';
+    }
 }
 
 
 void libros_con_menor_puntaje(Biblioteca* biblioteca){
     int tope_libros = biblioteca -> cantidad_libros_almacenados;
 
-    Libro vector_peor_puntuados[TOPE_PEOR_PUNTUADOS];
+    ordenar_libros_por_puntaje(biblioteca, tope_libros);
 
-    ordenar_vector_libros(biblioteca, tope_libros);
+    ordenar_libros_por_nombre(biblioteca, tope_libros);
 
-    cargar_vector_peor_puntuados(biblioteca, tope_libros, vector_peor_puntuados);
+    imprimir_libros_peor_puntuados(biblioteca);
+}
+
+
+void sobreescribir_archivo(Biblioteca* biblioteca){
+    fstream archivo(UBICACION_ARCHIVO, ios::out);
+    
+    int tope_libros = biblioteca -> cantidad_libros_almacenados;
+
+    for(int i = 0; i < tope_libros; i++){
+        Libro* libro_a_cargar = biblioteca -> vector_libros[i];  
+        archivo<<libro_a_cargar -> nombre<<','<<libro_a_cargar -> genero<<','<<libro_a_cargar -> puntaje<<'\n';
+    }
+}
+
+
+void borrar_biblioteca(Biblioteca* biblioteca){
+    int tope_libros = biblioteca -> cantidad_libros_almacenados;
+
+    for(int i = 0; i < tope_libros; i++){
+        delete biblioteca -> vector_libros[i];
+        biblioteca -> cantidad_libros_almacenados--;
+    }
+
+    delete[] biblioteca -> vector_libros;
+    biblioteca -> vector_libros = nullptr;
+}
+
+
+void guardar_y_salir(Biblioteca* biblioteca){
+    sobreescribir_archivo(biblioteca);
+
+    borrar_biblioteca(biblioteca);
 }

@@ -71,4 +71,15 @@ void generos_mas_leidos(Biblioteca* biblioteca);
 //Post:
 void genero_mejor_promedio(Biblioteca* biblioteca);
 
+
+//Pre:
+//Post:
+void libros_con_menor_puntaje(Biblioteca* biblioteca);
+
+
+//Pre:
+//Post:
+void guardar_y_salir(Biblioteca* biblioteca);
+
+
 #endif
