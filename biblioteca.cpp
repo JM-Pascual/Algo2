@@ -105,12 +105,18 @@ bool libro_existe_puntaje(Biblioteca* biblioteca, string nombre_libro_nuevo, int
 bool genero_valido(string genero_ingresado){
     bool genero_correcto = false;
 
-    if (genero_ingresado == AVENTURA ||
-        genero_ingresado == CIENCIA_FICCION ||
-        genero_ingresado == DIDACTICO ||
-        genero_ingresado == POLICIAL ||
-        genero_ingresado == ROMANCE ||
-        genero_ingresado == TERROR){
+    if (genero_ingresado == AVENTURA_MAY ||
+        genero_ingresado == AVENTURA_MIN ||
+        genero_ingresado == CIENCIA_FICCION_MAY ||
+        genero_ingresado == CIENCIA_FICCION_MIN ||
+        genero_ingresado == DIDACTICO_MAY ||
+        genero_ingresado == DIDACTICO_MIN ||
+        genero_ingresado == POLICIAL_MAY ||
+        genero_ingresado == POLICIAL_MIN ||
+        genero_ingresado == ROMANCE_MAY ||
+        genero_ingresado == ROMANCE_MIN ||
+        genero_ingresado == TERROR_MAY ||
+        genero_ingresado == TERROR_MIN){
 
             genero_correcto = true;
     }
@@ -123,11 +129,39 @@ bool genero_valido(string genero_ingresado){
 }
 
 
+void format_genero(string &genero_libro_nuevo){
+    if (genero_libro_nuevo == AVENTURA_MAY ||
+        genero_libro_nuevo == AVENTURA_MIN){
+            genero_libro_nuevo = AVENTURA;
+        }
+    else if (genero_libro_nuevo == CIENCIA_FICCION_MAY || 
+        genero_libro_nuevo == CIENCIA_FICCION_MIN){
+            genero_libro_nuevo = CIENCIA_FICCION;
+        }
+    else if (genero_libro_nuevo == DIDACTICO_MAY ||
+        genero_libro_nuevo == DIDACTICO_MIN){
+            genero_libro_nuevo = DIDACTICO;
+        }
+    else if (genero_libro_nuevo == POLICIAL_MAY ||
+        genero_libro_nuevo == POLICIAL_MIN){
+            genero_libro_nuevo = POLICIAL;
+        }
+    else if (genero_libro_nuevo == ROMANCE_MAY ||
+        genero_libro_nuevo == ROMANCE_MIN){
+            genero_libro_nuevo = ROMANCE;
+        }
+    else{ //Debido a que ya se valido el género, la única opción que queda es Terror.
+        genero_libro_nuevo = TERROR;
+    }
+}
+
+
 void definir_genero(string &genero_libro_nuevo){
     cin>>genero_libro_nuevo;
     while(!(genero_valido(genero_libro_nuevo))){
         cin>>genero_libro_nuevo;
     }
+    format_genero(genero_libro_nuevo);
 }
 
 
@@ -153,11 +187,11 @@ void completar_datos_libro(Biblioteca* biblioteca, Libro* libro_nuevo, bool &lib
 
     if(!(libro_existe(biblioteca, nombre_libro_nuevo))){
         cout<<"Introduzca el género del libro continuación: "<<'\n';
-        cout<<"Los genéros posibles son:"<<'\n';
+        cout<<"Los genéros posibles (junto con como los registra el sistema) son:"<<'\n';
         cout<<'\n';
-        cout<<"Aventura --> introducir A"<<'\n'<<"Ciencia ficción --> introducir C"<<'\n';
-        cout<<"Didáctico --> introducir D"<<'\n'<<"Policial --> introducir P"<<'\n';
-        cout<<"Romance --> introducir R"<<'\n'<<"Terror --> introducir T"<<'\n'; 
+        cout<<"- Aventura"<<'\n'<<"- Ciencia-ficcion"<<'\n';
+        cout<<"- Didáctico"<<'\n'<<"- Policial"<<'\n';
+        cout<<"- Romance"<<'\n'<<"- Terror"<<'\n'; 
         string genero_libro_nuevo;
         definir_genero(genero_libro_nuevo);
 
@@ -217,7 +251,7 @@ void editar_puntaje_libro(Biblioteca* biblioteca){
 
 
 void cargar_ranking(Biblioteca* biblioteca, Biblioteca* ranking, 
-        int tope_libros, int &tope_ranking, int &puntaje_ganador){
+        int tope_libros, int &puntaje_ganador){
     
     for(int i = 0; i < tope_libros; i++){
         if (biblioteca -> vector_libros[i] -> puntaje >= puntaje_ganador){
@@ -230,7 +264,6 @@ void cargar_ranking(Biblioteca* biblioteca, Biblioteca* ranking,
             libro_ganador -> puntaje = biblioteca -> vector_libros[i] -> puntaje;
 
             cargar_libro(ranking, libro_ganador);
-            tope_ranking++;
         }
     }
 }
@@ -238,23 +271,27 @@ void cargar_ranking(Biblioteca* biblioteca, Biblioteca* ranking,
 
 void listar_libros_mejor_puntuados(Biblioteca* biblioteca){
     Biblioteca* ranking = new Biblioteca;
+    ranking -> cantidad_libros_almacenados = 0;
 
     int tope_libros = biblioteca -> cantidad_libros_almacenados;
-    int tope_ranking = 0;
 
     int puntaje_ganador = 0;
 
-    cargar_ranking(biblioteca, ranking, tope_libros, tope_ranking, puntaje_ganador);
+    cargar_ranking(biblioteca, ranking, tope_libros, puntaje_ganador);
+    int tope_ranking = ranking -> cantidad_libros_almacenados;
 
     cout<<"Mostrando los mejores libro/s, con un puntaje de: "<<puntaje_ganador<<'\n';
     for (int j = 0; j < tope_ranking; j++){
         if (ranking -> vector_libros[j] -> puntaje == puntaje_ganador){
             cout<<"- "<<ranking -> vector_libros[j] -> nombre<<'\n';
+
+            ranking -> cantidad_libros_almacenados--;
+            delete ranking -> vector_libros[j]; //Borro los libros una vez los haya listado o no.
         }
 
-        delete ranking -> vector_libros[j]; //Borro los libros una vez los haya listado o no.
     }
     
+    delete[] ranking -> vector_libros; 
     ranking -> vector_libros = nullptr;
     delete ranking;
 }
@@ -378,12 +415,12 @@ void cargar_promedios(Biblioteca* biblioteca, int tope_libros, float vector_prom
             contador_terror++;
         }
     }
-    vector_promedios[INDEX_AVENTURA] = (float)puntajes_aventura / contador_aventura;
-    vector_promedios[INDEX_CIENCIA_FICCION] = (float)puntajes_ciencia_ficcion / contador_ciencia_ficcion;
-    vector_promedios[INDEX_DIDACTICO] = (float)puntajes_didactico / contador_didactico;
-    vector_promedios[INDEX_POLICIAL] = (float)puntajes_policial / contador_policial;
-    vector_promedios[INDEX_ROMANCE] = (float)puntajes_romance / contador_romance;
-    vector_promedios[INDEX_TERROR] = (float)puntajes_terror / contador_terror;
+    vector_promedios[INDEX_AVENTURA] = (float)puntajes_aventura / (float)contador_aventura;
+    vector_promedios[INDEX_CIENCIA_FICCION] = (float)puntajes_ciencia_ficcion / (float)contador_ciencia_ficcion;
+    vector_promedios[INDEX_DIDACTICO] = (float)puntajes_didactico / (float)contador_didactico;
+    vector_promedios[INDEX_POLICIAL] = (float)puntajes_policial / (float)contador_policial;
+    vector_promedios[INDEX_ROMANCE] = (float)puntajes_romance / (float)contador_romance;
+    vector_promedios[INDEX_TERROR] = (float)puntajes_terror / (float)contador_terror;
 }
 
 
@@ -491,4 +528,46 @@ void guardar_y_salir(Biblioteca* biblioteca){
     sobreescribir_archivo(biblioteca);
 
     borrar_biblioteca(biblioteca);
+}
+
+
+void ejecutar_ordenes(Biblioteca* biblioteca, int comando, bool &fin_de_ordenes){
+    switch (comando){
+    case (COMANDO_LISTAR_LIBROS):
+        cout<<"Eligió enumerar los libros cargados en el sistema, estos son:"<<'\n';
+        enumerar_libros_cargados(biblioteca);
+        break;
+    case (COMANDO_AGREGAR_LIBRO):
+        cout<<"Eligió añadir un libro al sistema."<<'\n';
+        cargar_nuevo_libro(biblioteca);
+        break;
+    case (COMANDO_EDITAR_PUNTAJE):
+        cout<<"Eligió modificar el puntaje de un libro."<<'\n';
+        editar_puntaje_libro(biblioteca);
+        break;
+    case (COMANDO_LIBRO_FAVORITO):
+        cout<<"Eligió enumerar el/los libro/s con el mejor puntaje:"<<'\n';
+        listar_libros_mejor_puntuados(biblioteca);
+        break;
+    case (COMANDO_PEORES_PUNTAJES):
+        cout<<"Eligió enumerar los "<<TOPE_PEOR_PUNTUADOS<<" libros con los peores puntajes, estos son:"<<'\n';
+        libros_con_menor_puntaje(biblioteca);
+        break;
+    case (COMANDO_GENERO_MAS_LEIDO):
+        cout<<"Eligió enumerar el/los género/s más leídos:"<<'\n';
+        generos_mas_leidos(biblioteca);
+        break;
+    case (COMANDO_GENERO_FAVORITO):
+        cout<<"Eligió enumerar el/los genero/s con mejor promedio de puntaje:"<<'\n';
+        genero_mejor_promedio(biblioteca);
+        break;
+    case (COMANDO_GUARDAR_Y_SALIR):
+        cout<<"Eligió guardar los cambios realizados y finalizar el programa."<<'\n';
+        guardar_y_salir(biblioteca);
+        fin_de_ordenes = true;
+        break;
+    default:
+        cout<<"ERROR! Introduzca alguna de las opciones posibles"<<'\n';
+        break;
+    }
 }
