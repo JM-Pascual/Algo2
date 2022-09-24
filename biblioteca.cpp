@@ -88,7 +88,7 @@ bool libro_existe(Biblioteca* biblioteca, string nombre_libro_nuevo){
 
     while (!(libro_repetido) && i < tope_libros){
         if (biblioteca -> vector_libros[i]->nombre == nombre_libro_nuevo){
-            cout<<"Error! El libro ya está cargado. Intente nuevamente";
+            cout<<"Error! El libro ya está cargado. Intente nuevamente"<<'\n';
             libro_repetido = true;
         }
         i++;
@@ -179,9 +179,9 @@ void format_genero(string &genero_libro_nuevo){
 //Pre: -
 //Post: Recibe el input del usuario sobre el género del libro nuevo e itera hasta que este es uno de los posibles.
 void definir_genero(string &genero_libro_nuevo){
-    cin>>genero_libro_nuevo;
+    getline(cin >> ws, genero_libro_nuevo);
     while(!(genero_valido(genero_libro_nuevo))){
-        cin>>genero_libro_nuevo;
+        getline(cin >> ws, genero_libro_nuevo);
     }
     format_genero(genero_libro_nuevo);
 }
@@ -212,8 +212,8 @@ void completar_datos_libro(Biblioteca* biblioteca, Libro* libro_nuevo, bool &lib
 
     if(!(libro_existe(biblioteca, nombre_libro_nuevo))){
         cout<<"Introduzca el género del libro continuación: ";
-        cout<<'\n'<<"Los genéros posibles (junto con como los registra el sistema) son:"<<'\n'<<'\n';
-        cout<<"- Aventura"<<'\n'<<"- Ciencia-ficcion"<<'\n';
+        cout<<'\n'<<"Los genéros posibles son:"<<'\n'<<'\n';
+        cout<<"- Aventura"<<'\n'<<"- Ciencia ficcion"<<'\n';
         cout<<"- Didáctico"<<'\n'<<"- Policial"<<'\n';
         cout<<"- Romance"<<'\n'<<"- Terror"<<'\n'; 
         string genero_libro_nuevo;
@@ -314,11 +314,10 @@ void listar_libros_mejor_puntuados(Biblioteca* biblioteca){
     for (int j = 0; j < tope_ranking; j++){
         if (ranking -> vector_libros[j] -> puntaje == puntaje_ganador){
             cout<<"- "<<ranking -> vector_libros[j] -> nombre<<'\n';
-
-            ranking -> cantidad_libros_almacenados--;
-            delete ranking -> vector_libros[j]; //Borro los libros una vez los haya listado o no.
         }
 
+        ranking -> cantidad_libros_almacenados--;
+        delete ranking -> vector_libros[j]; //Borro los libros del ranking los haya listado o no.
     }
     
     delete[] ranking -> vector_libros; 
@@ -608,7 +607,7 @@ void guardar_y_salir(Biblioteca* biblioteca){
 void ejecutar_ordenes(Biblioteca* biblioteca, int comando, bool &fin_de_ordenes){
     switch (comando){
     case (COMANDO_LISTAR_LIBROS):
-        cout<<"Eligió enumerar los libros cargados en el sistema, estos son:"<<'\n';
+        cout<<"Eligió enumerar los libros cargados en el sistema, estos son:"<<'\n'<<'\n';
         enumerar_libros_cargados(biblioteca);
         break;
     case (COMANDO_AGREGAR_LIBRO):

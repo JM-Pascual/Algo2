@@ -14,14 +14,14 @@ const std::string TERROR = "T";
 
 
 const std::string AVENTURA_MAY = "Aventura";
-const std::string CIENCIA_FICCION_MAY = "Ciencia-ficcion";
+const std::string CIENCIA_FICCION_MAY = "Ciencia ficcion";
 const std::string DIDACTICO_MAY = "Didactico";
 const std::string POLICIAL_MAY = "Policial";
 const std::string ROMANCE_MAY = "Romance";
 const std::string TERROR_MAY = "Terror";
 
 const std::string AVENTURA_MIN = "aventura";
-const std::string CIENCIA_FICCION_MIN = "ciencia-ficcion";
+const std::string CIENCIA_FICCION_MIN = "ciencia ficcion";
 const std::string DIDACTICO_MIN = "didactico";
 const std::string POLICIAL_MIN = "policial";
 const std::string ROMANCE_MIN = "romance";

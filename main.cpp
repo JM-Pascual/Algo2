@@ -1,12 +1,21 @@
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
+#include <string>
 #include "biblioteca.hpp"
 
 using namespace std;
 
 int main(){
+    cout<<R"(
+ ______    __   _______  __   __  ____    ____  _______  __   __   __   _______   ______    __  
+|   _  \  |  | |   ____||  \ |  | \   \  /   / |   ____||  \ |  | |  | |       \ /  __  \  |  | 
+|  |_)  | |  | |  |__   |   \|  |  \   \/   /  |  |__   |   \|  | |  | |  .--.  |  |  |  | |  | 
+|   _  <  |  | |   __|  |  . `  |   \      /   |   __|  |  . `  | |  | |  |  |  |  |  |  | |  | 
+|  |_)  | |  | |  |____ |  |\   |    \    /    |  |____ |  |\   | |  | |  '--'  |  `--'  | |__| 
+|______/  |__| |_______||__| \__|     \__/     |_______||__| \__| |__| |_______/ \______/  (__)                                                                                            
+    )"<<'\n';
     cout<<"Bienvenido al sistema de organización de libros!"<<'\n';
-    cout<<"Este le permite realizar una serie de operaciones sobre los libros leídos que cargue al sistema."<<'\n';
+    cout<<"Este le permite realizar una serie de operaciones sobre los libros que cargue al sistema."<<'\n';
     cout<<"Presione cualquier tecla junto con ENTER para continuar"<<'\n';
     char cualquier_tecla;
     cin>>cualquier_tecla;
