@@ -64,53 +64,54 @@ struct Biblioteca {
 };
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Carga el vector dinámico inicial con los datos presentes en el csv al inicializar el programa.
+//      De no encontrarse, creara uno.
 void cargar_biblioteca(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Muestra por pantalla los libros cargados en el vector dinámico de Libros y su información.
 void enumerar_libros_cargados(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: - 
+//Post: Pide al usuario la información de un nuevo libro el cual luego se cargará en el vector de Libros.
 void cargar_nuevo_libro(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Pide al usuario el nombre de un libro, y de encontrarse presente en el vector permite modificar su puntaje.
 void editar_puntaje_libro(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Muestra por pantalla todos los libros que tengan el puntaje más alto entre los demás dentro del vector.
 void listar_libros_mejor_puntuados(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Muestra por pantalla los o el género más repetido dentro de los libros presentes en el vector de Libros.
 void generos_mas_leidos(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Muestra por pantalla el género con el mejor promedio de puntuaciones ofrecidas por el usuario.
 void genero_mejor_promedio(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Muestra por pantalla los 3 libros con el puntaje más bajo (Desempatando por orden alfabético en caso de empate).
 void libros_con_menor_puntaje(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: -
+//Post: Guarda los libros presentes en el vector de Libros en un csv que sobreescribe al preexistente con los cambios realizados.
 void guardar_y_salir(Biblioteca* biblioteca);
 
 
-//Pre:
-//Post:
+//Pre: El comando proporcionado por el usuario debe ser 1 solo y numérico. Múltiples carácteres por comando alteran el funcionamiento del programa.
+//Post: Analiza el input del usuario y si corresponde a un comando válido ejecuta su instrucción. 
 void ejecutar_ordenes(Biblioteca*, int comando, bool &fin_de_ordenes);
 
 

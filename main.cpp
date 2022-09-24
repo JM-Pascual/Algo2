@@ -1,12 +1,17 @@
-#include <fstream>
+#include <iostream>
+#include <stdlib.h> 
 #include "biblioteca.hpp"
 
 using namespace std;
 
 int main(){
     cout<<"Bienvenido al sistema de organización de libros!"<<'\n';
-    cout<<'\n';
-    
+    cout<<"Este le permite realizar una serie de operaciones sobre los libros leídos que cargue al sistema."<<'\n';
+    cout<<"Presione cualquier tecla junto con ENTER para continuar"<<'\n';
+    char cualquier_tecla;
+    cin>>cualquier_tecla;
+    system("clear");
+
     Biblioteca* biblioteca = new Biblioteca;
     biblioteca -> cantidad_libros_almacenados = 0;
     
@@ -16,7 +21,8 @@ int main(){
     int comando;
 
     while (!fin_de_ordenes){
-        cout<<"Las opciones son:"<<'\n'<<
+        cout<<"Las opciones son:"<<'\n';
+        cout<<'\n'<<"------------------------------------------------------"<<'\n'<<
         "1- Listar libros"<<'\n'<<
         "2- Agregar un libro"<<'\n'<<
         "3- Editar el puntaje de un libro"<<'\n'<<
@@ -25,8 +31,10 @@ int main(){
         "6- Listar género/s más leído/s"<<'\n'<<
         "7- Listar género/s mejor puntuado/s"<<'\n'<<
         "0- Guardar y salir del programa"<<'\n';
-        cout<<"Introduzca la orden a ejecutar:";
+        cout<<"------------------------------------------------------"<<'\n';
+        cout<<"Introduzca la orden a ejecutar: ";
         cin>>comando;
+        system("clear");
         ejecutar_ordenes(biblioteca, comando, fin_de_ordenes);
     }
 
@@ -34,5 +42,3 @@ int main(){
 
     return 0;
 }
-
-//Permitirle al user agregar libros escribiendo el genero!
